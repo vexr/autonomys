@@ -31,7 +31,7 @@ display_gpu_info() {
     if [ "$rocm_installed" = true ]; then
         printf "AMD GPUs (ROCm):\n"
         rocm-smi --showproductname |
-            awk '/GPU/ {printf "GPU %s: %s | ", $1, $3 " " $4}' |
+            awk '/GPU\[[0-9]+\]/{gsub(/\[|\]/,"",$2); gpu_index=$2} /Card model/ {print "GPU " gpu_index ": " $4, $5, $6, $7}' |
             sed 's/ | $/\n/'
     fi
 
