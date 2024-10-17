@@ -34,11 +34,12 @@ display_gpu_info() {
             awk '
             /GPU\[[0-9]+\]/ { 
                 gpu_index = $2; 
-                gpu_index = substr(gpu_index, 1, length(gpu_index)-1);
+                gpu_index = substr(gpu_index, 1, length(gpu_index)-1);  # Remove the trailing "]"
             } 
             /Card model/ { 
-                # Capture the model after ": Card model:"
-                model = substr($0, index($0, ": Card model:") + length(": Card model: ") + 1);
+                # Capture the model after ": Card model:" and remove leading spaces
+                model = substr($0, index($0, ": Card model:") + length(": Card model: "));
+                model = gensub(/^ +| +$/, "", "g", model);  # Remove leading and trailing spaces
                 print "GPU " gpu_index ": " model 
             }' |
             sed 's/ | $/\n/'
