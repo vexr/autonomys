@@ -65,6 +65,12 @@ calculate_and_print_results() {
         "$cnt" "$avg_per_min" "$avg_time" "$tib_per_day"
 }
 
+# Check if bc is installed
+if ! command -v bc &> /dev/null; then
+    echo "bc is not installed. Installing now..."
+    sudo apt install -y bc
+fi
+
 # Set default time or use provided parameter
 minutes=${1:-5}
 
